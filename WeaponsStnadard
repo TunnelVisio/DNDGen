@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weapon Generator</title>
+</head>
+<body>
+    <h1>Special Stat Weapon Generator</h1>
+    
+    <label for="weapon-type-select">Select Weapon Type:</label>
+    <select id="weapon-type-select">
+        <option value="">--Choose a Weapon Type--</option>
+        <option value="melee">Melee</option>
+        <option value="ranged">Ranged</option>
+    </select>
+
+    <label for="specific-weapon-select">Select Specific Weapon:</label>
+    <select id="specific-weapon-select">
+        <option value="">--Choose a Specific Weapon--</option>
+    </select>
+
+    <button id="generate-weapon-btn">Generate Weapon</button>
+    <div id="generated-weapon"></div>
+
+    <script>
+        const weaponTypeSelect = document.getElementById("weapon-type-select");
+        const specificWeaponSelect = document.getElementById("specific-weapon-select");
+        const generateWeaponBtn = document.getElementById("generate-weapon-btn");
+        const generatedWeaponDiv = document.getElementById("generated-weapon");
+
+        const weapons = {
+            melee: [
+                { name: "Dagger", skill: "Quick Stab" },
+                { name: "Longsword", skill: "Power Slash" },
+            ],
+            ranged: [
+                { name: "Shortbow", skill: "Precision Shot" },
+                { name: "Crossbow", skill: "Bolt Pierce" },
+            ],
+        };
+
+        weaponTypeSelect.addEventListener("change", function () {
+            const weaponType = weaponTypeSelect.value;
+            specificWeaponSelect.innerHTML = `<option value="">--Choose a Specific Weapon--</option>`;
+
+            if (weaponType) {
+                weapons[weaponType].forEach((weapon) => {
+                    const option = document.createElement("option");
+                    option.value = weapon.name;
+                    option.textContent = weapon.name;
+                    specificWeaponSelect.appendChild(option);
+                });
+            }
+        });
+
+        generateWeaponBtn.addEventListener("click", function () {
+            const selectedWeaponType = weaponTypeSelect.value;
+            const selectedSpecificWeapon = specificWeaponSelect.value;
+
+            if (!selectedWeaponType || !selectedSpecificWeapon) {
+                alert("Please select a weapon type and a specific weapon.");
+                return;
+            }
+
+            const weapon = weapons[selectedWeaponType].find(
+                (w) => w.name === selectedSpecificWeapon
+            );
+
+            if (weapon) {
+                generatedWeaponDiv.innerHTML = `<p>Generated Weapon: ${weapon.name} with special skill "${weapon.skill}"</p>`;
+            } else {
+                generatedWeaponDiv.innerHTML = `<p>Error: Weapon not found.</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
